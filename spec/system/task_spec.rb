@@ -79,7 +79,6 @@ RSpec.feature 'Task', type: :system do
         given(:task) { create(:task, :complete, project_id: project.id) }
 
         scenario 'Taskの完了日が更新されないこと' do
-          # TODO: FactoryBotのtraitを利用してください
           visit edit_project_task_path(project, task)
           select 'todo', from: 'Status'
           click_button 'Update Task'
