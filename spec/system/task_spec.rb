@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Task', type: :system do
-  describe 'Task一覧' do
-    context '正常系' do
-      it '一覧ページにアクセスした場合、Taskが表示されること' do
+  feature 'Task一覧' do
+    feature '正常系' do
+      scenario '一覧ページにアクセスした場合、Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
@@ -13,7 +13,7 @@ RSpec.describe 'Task', type: :system do
         expect(current_path).to eq project_tasks_path(project)
       end
 
-      xit 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
+      xscenario 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
         # FIXME: テストが失敗するので修正してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
@@ -26,9 +26,9 @@ RSpec.describe 'Task', type: :system do
     end
   end
 
-  describe 'Task新規作成' do
-    context '正常系' do
-      it 'Taskが新規作成されること' do
+  feature 'Task新規作成' do
+    feature '正常系' do
+      scenario 'Taskが新規作成されること' do
         # TODO: ローカル変数ではなく let を使用してください
         project = FactoryBot.create(:project)
         visit project_tasks_path(project)
@@ -42,9 +42,9 @@ RSpec.describe 'Task', type: :system do
     end
   end
 
-  describe 'Task詳細' do
-    context '正常系' do
-      it 'Taskが表示されること' do
+  feature 'Task詳細' do
+    feature '正常系' do
+      scenario 'Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
@@ -57,9 +57,9 @@ RSpec.describe 'Task', type: :system do
     end
   end
 
-  describe 'Task編集' do
-    context '正常系' do
-      xit 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
+  feature 'Task編集' do
+    feature '正常系' do
+      xscenario 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
         # FIXME: テストが失敗するので修正してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
@@ -71,7 +71,7 @@ RSpec.describe 'Task', type: :system do
         expect(current_path).to eq project_tasks_path(project)
       end
 
-      it 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
+      scenario 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
         # TODO: ローカル変数ではなく let を使用してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
@@ -83,7 +83,7 @@ RSpec.describe 'Task', type: :system do
         expect(current_path).to eq project_task_path(project, task)
       end
 
-      it '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
+      scenario '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
         # TODO: FactoryBotのtraitを利用してください
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id, status: :done, completion_date: Time.current.yesterday)
@@ -97,10 +97,10 @@ RSpec.describe 'Task', type: :system do
     end
   end
 
-  describe 'Task削除' do
-    context '正常系' do
+  feature 'Task削除' do
+    feature '正常系' do
       # FIXME: テストが失敗するので修正してください
-      xit 'Taskが削除されること' do
+      xscenario 'Taskが削除されること' do
         project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_tasks_path(project)
