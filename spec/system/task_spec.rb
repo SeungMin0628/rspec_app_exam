@@ -61,7 +61,7 @@ RSpec.feature 'Task', type: :system do
         fill_in 'Deadline', with: deadline
         click_button 'Update Task'
         click_link 'Back'
-        expect(find('.task_list')).to have_content(deadline.strftime('%m/%d %H:%M'))
+        expect(find('.task_list')).to have_content(deadline.strftime('%-m/%d %-H:%M'))
         expect(current_path).to eq project_tasks_path(project)
       end
 
