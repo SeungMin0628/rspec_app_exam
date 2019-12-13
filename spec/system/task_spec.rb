@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 RSpec.feature 'Task', type: :system do
-  given!(:project) { create :project }
-  given!(:task) { create :task, project_id: project.id }
+  given(:project) { create :project }
+  given(:task) { create :task, project_id: project.id }
 
   feature 'Task一覧' do
+    given!(:task) { create :task, project_id: project.id }
+
     feature '正常系' do
       scenario '一覧ページにアクセスした場合、Taskが表示されること' do
         visit project_tasks_path(project)
@@ -90,6 +92,8 @@ RSpec.feature 'Task', type: :system do
   end
 
   feature 'Task削除' do
+    given!(:task) { create :task, project_id: project.id }
+
     feature '正常系' do
       scenario 'Taskが削除されること' do
         visit project_tasks_path(project)
