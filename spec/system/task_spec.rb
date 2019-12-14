@@ -1,21 +1,21 @@
 require 'rails_helper'
 
-RSpec.feature 'Task', type: :system do
-  given(:project) { create :project }
-  given(:task) { create :task, project_id: project.id }
+RSpec.describe 'Task', type: :system do
+  let(:project) { create :project }
+  let(:task) { create :task, project_id: project.id }
 
-  feature 'Task一覧' do
-    given!(:task) { create :task, project_id: project.id }
+  describe 'Task一覧' do
+    let!(:task) { create :task, project_id: project.id }
 
-    feature '正常系' do
-      scenario '一覧ページにアクセスした場合、Taskが表示されること' do
+    describe '正常系' do
+      it '一覧ページにアクセスした場合、Taskが表示されること' do
         visit project_tasks_path(project)
         expect(page).to have_content task.title
         expect(Task.count).to eq 1
         expect(current_path).to eq project_tasks_path(project)
       end
 
-      scenario 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
+      it 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
         visit project_path(project)
         click_link 'View Todos'
 
@@ -27,9 +27,9 @@ RSpec.feature 'Task', type: :system do
     end
   end
 
-  feature 'Task新規作成' do
-    feature '正常系' do
-      scenario 'Taskが新規作成されること' do
+  describe 'Task新規作成' do
+    describe '正常系' do
+      it 'Taskが新規作成されること' do
         expected_size = Task.count + 1
 
         visit project_tasks_path(project)
@@ -43,9 +43,9 @@ RSpec.feature 'Task', type: :system do
     end
   end
 
-  feature 'Task詳細' do
-    feature '正常系' do
-      scenario 'Taskが表示されること' do
+  describe 'Task詳細' do
+    describe '正常系' do
+      it 'Taskが表示されること' do
         visit project_task_path(project, task)
         expect(page).to have_content(task.title)
         expect(page).to have_content(task.status)
@@ -55,9 +55,9 @@ RSpec.feature 'Task', type: :system do
     end
   end
 
-  feature 'Task編集' do
-    feature '正常系' do
-      scenario 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
+  describe 'Task編集' do
+    describe '正常系' do
+      it 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
         visit edit_project_task_path(project, task)
         deadline = Time.current
         fill_in 'Deadline', with: deadline
@@ -67,7 +67,7 @@ RSpec.feature 'Task', type: :system do
         expect(current_path).to eq project_tasks_path(project)
       end
 
-      scenario 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
+      it 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
         visit edit_project_task_path(project, task)
         select 'done', from: 'Status'
         click_button 'Update Task'
@@ -76,10 +76,10 @@ RSpec.feature 'Task', type: :system do
         expect(current_path).to eq project_task_path(project, task)
       end
 
-      feature '既にステータスが完了のタスクのステータスを変更した場合' do
-        given(:task) { create(:task, :complete, project_id: project.id) }
+      describe '既にステータスが完了のタスクのステータスを変更した場合' do
+        let(:task) { create(:task, :complete, project_id: project.id) }
 
-        scenario 'Taskの完了日が更新されないこと' do
+        it 'Taskの完了日が更新されないこと' do
           visit edit_project_task_path(project, task)
           select 'todo', from: 'Status'
           click_button 'Update Task'
@@ -91,11 +91,11 @@ RSpec.feature 'Task', type: :system do
     end
   end
 
-  feature 'Task削除' do
-    given!(:task) { create :task, project_id: project.id }
+  describe 'Task削除' do
+    let!(:task) { create :task, project_id: project.id }
 
-    feature '正常系' do
-      scenario 'Taskが削除されること' do
+    describe '正常系' do
+      it 'Taskが削除されること' do
         visit project_tasks_path(project)
         click_link 'Destroy'
         page.driver.browser.switch_to.alert.accept
